@@ -25,6 +25,7 @@ export function PhotoUploader({ photos, primaryPhoto, onChange }: PhotoUploaderP
   const [isUploading, setIsUploading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [isDragging, setIsDragging] = useState(false)
+  const [brokenUrls, setBrokenUrls] = useState<Record<string, boolean>>({})
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const effectivePrimary = primaryPhoto || photos[0] || ''
@@ -198,14 +199,23 @@ export function PhotoUploader({ photos, primaryPhoto, onChange }: PhotoUploaderP
                     isPrimary ? 'border-amber-500 ring-2 ring-amber-500/50' : 'border-white/10',
                   )}
                 >
-                  <img
-                    src={displaySrc}
-                    alt={`Vehicle upload ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
+                  {brokenUrls[photoUrl] ? (
+                    <div className="w-full h-full flex flex-col items-center justify-center p-2 text-center bg-red-950/40 text-red-300">
+                      <AlertCircle className="h-6 w-6 text-red-400 mb-1" />
+                      <span className="text-[10px] font-bold">Image Missing</span>
+                      <span className="text-[9px] text-red-300/60 mt-0.5">Click X to delete or re-upload</span>
+                    </div>
+                  ) : (
+                    <img
+                      src={displaySrc}
+                      alt={`Vehicle upload ${index + 1}`}
+                      className="w-full h-full object-cover"
+                      onError={() => setBrokenUrls((prev) => ({ ...prev, [photoUrl]: true }))}
+                    />
+                  )}
 
                   {/* Primary Badge */}
-                  {isPrimary && (
+                  {isPrimary && !brokenUrls[photoUrl] && (
                     <div className="absolute top-1.5 left-1.5 bg-amber-500 text-ink text-[10px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded shadow flex items-center gap-1">
                       <Star className="h-3 w-3 fill-ink" />
                       <span>Cover</span>

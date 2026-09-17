@@ -398,12 +398,23 @@ export default function AdminInventory({ defaultFilter = 'all' }: AdminInventory
                         <div className="flex items-center gap-3">
                           <div className="h-12 w-16 rounded overflow-hidden bg-black/60 border border-white/10 shrink-0 relative">
                             {v.photoUrl ? (
-                              <img src={v.photoUrl} alt={v.model} className="h-full w-full object-cover" />
-                            ) : (
-                              <div className="h-full w-full flex items-center justify-center text-[9px] text-white/30">
-                                No photo
-                              </div>
-                            )}
+                              <img
+                                src={v.photoUrl}
+                                alt={v.model}
+                                className="h-full w-full object-cover"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none'
+                                  const fallback = e.currentTarget.nextElementSibling as HTMLElement | null
+                                  if (fallback) fallback.style.display = 'flex'
+                                }}
+                              />
+                            ) : null}
+                            <div
+                              className="h-full w-full flex items-center justify-center text-[9px] text-white/30"
+                              style={{ display: v.photoUrl ? 'none' : 'flex' }}
+                            >
+                              No photo
+                            </div>
                             {v.gallery && v.gallery.length > 1 && (
                               <span className="absolute bottom-0.5 right-0.5 bg-black/80 text-white/80 text-[8px] px-1 rounded font-mono">
                                 +{v.gallery.length}
