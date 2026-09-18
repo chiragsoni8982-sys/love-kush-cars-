@@ -77,10 +77,12 @@ export default function App() {
               <Route path="/sell-your-car" element={<SellYourCar />} />
               <Route path="/finance" element={<Finance />} />
               <Route path="/about" element={<About />} />
+              <Route path="/about-us" element={<About />} />
               <Route path="/testimonials" element={<ComingSoon title="Testimonials" />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/contact-us" element={<Contact />} />
               <Route path="/privacy-policy" element={<ComingSoon title="Privacy Policy" />} />
               <Route path="/terms-and-conditions" element={<ComingSoon title="Terms & Conditions" />} />
               <Route path="/wishlist" element={<ComingSoon title="Wishlist" />} />
