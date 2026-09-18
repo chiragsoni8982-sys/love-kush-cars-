@@ -26,12 +26,9 @@ export function VehicleImage({
   showBackdrop = true,
 }: VehicleImageProps) {
   const [hasError, setHasError] = useState(false)
-  const [isLoaded, setIsLoaded] = useState(false)
 
-  // Reset states when the image source changes
   useEffect(() => {
     setHasError(false)
-    setIsLoaded(false)
   }, [src])
 
   const safeTone = tone && tone.startsWith('#') ? tone : '#1a1a1a'
@@ -40,8 +37,8 @@ export function VehicleImage({
     return (
       <div
         className={cn(
-          'relative overflow-hidden flex items-center justify-center',
-          fit === 'contain' ? 'bg-[#0a0a0a]' : 'bg-ink',
+          'relative overflow-hidden flex items-center justify-center bg-neutral-900',
+          fit === 'contain' ? 'bg-[#0a0a0a]' : 'bg-neutral-900',
           className,
         )}
       >
@@ -56,16 +53,13 @@ export function VehicleImage({
         <img
           src={src}
           alt={`${brand} ${model}`}
+          decoding="async"
           className={cn(
-            'transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]',
-            !isLoaded && 'opacity-0',
-            isLoaded && 'opacity-100',
+            'transition-transform duration-500 ease-out',
             fit === 'contain'
               ? 'relative z-10 max-h-full max-w-full object-contain m-auto select-none'
-              : 'h-full w-full object-cover group-hover:scale-105',
+              : 'h-full w-full object-cover object-center group-hover:scale-105',
           )}
-          loading="lazy"
-          onLoad={() => setIsLoaded(true)}
           onError={() => setHasError(true)}
         />
       </div>
