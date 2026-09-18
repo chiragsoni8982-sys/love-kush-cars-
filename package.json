@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
-    "build": "node scripts/generate-sitemap.mjs && tsc -b && vite build",
+    "sync:vehicles": "node scripts/sync-vehicles.mjs",
+    "build": "node scripts/sync-vehicles.mjs && node scripts/generate-sitemap.mjs && tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview"
   },
