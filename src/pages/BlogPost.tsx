@@ -1,9 +1,11 @@
-import { useEffect } from 'react'
+import { useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { BookOpen, AlertCircle, Car } from 'lucide-react'
 import { blogPosts } from '@/data/blogPosts'
 import { ArticleReader } from '@/components/blog/ArticleReader'
 import { Button } from '@/components/ui/Button'
+import { SEO } from '@/components/seo/SEO'
+import { getBlogPostSEOMetadata } from '@/data/seoRegistry'
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>()
@@ -13,18 +15,20 @@ export default function BlogPost() {
   const prevPost = currentIndex > 0 ? blogPosts[currentIndex - 1] : undefined
   const nextPost = currentIndex !== -1 && currentIndex < blogPosts.length - 1 ? blogPosts[currentIndex + 1] : undefined
 
-  useEffect(() => {
-    if (post) {
-      document.title = `${post.title} | Love Kush Cars Journal`
-    } else {
-      document.title = 'Article Not Found | Love Kush Cars'
+  const seoData = useMemo(() => {
+    if (post) return getBlogPostSEOMetadata(post)
+    return {
+      title: 'Article Not Found | Love Kush Cars',
+      description: 'The automotive guide you are looking for might have been updated or moved.',
+      canonicalPath: `/blog/${slug || ''}`,
+      noindex: true,
     }
-    window.scrollTo(0, 0)
   }, [post, slug])
 
   if (!post) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center bg-paper pt-32 pb-20">
+        <SEO {...seoData} />
         <div className="text-center max-w-md mx-auto p-8 border border-line bg-mist shadow-sm">
           <AlertCircle className="h-12 w-12 text-rose-500 mx-auto mb-4" />
           <h2 className="font-[family-name:var(--font-display)] font-bold text-2xl text-ink">
@@ -50,5 +54,10 @@ export default function BlogPost() {
     )
   }
 
-  return <ArticleReader post={post} prevPost={prevPost} nextPost={nextPost} />
+  return (
+    <>
+      <SEO {...seoData} />
+      <ArticleReader post={post} prevPost={prevPost} nextPost={nextPost} />
+    </>
+  )
 }

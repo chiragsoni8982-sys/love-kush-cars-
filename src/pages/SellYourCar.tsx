@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
   ShieldCheck,
@@ -10,6 +9,8 @@ import {
   MapPin,
   Sparkles,
 } from 'lucide-react'
+import { SEO } from '@/components/seo/SEO'
+import { staticPageSEO } from '@/data/seoRegistry'
 import { SellCarForm } from '@/components/sell/SellCarForm'
 import { WhySellLoveKush } from '@/components/sell/WhySellLoveKush'
 import { HowItWorksSteps } from '@/components/sell/HowItWorksSteps'
@@ -19,13 +20,9 @@ import { SellTestimonials } from '@/components/sell/SellTestimonials'
 import { SellFaqSection } from '@/components/sell/SellFaqSection'
 
 export default function SellYourCar() {
-  useEffect(() => {
-    document.title = 'Sell Your Car Online at Best Price | Free Doorstep Inspection | Love Kush Cars'
-    window.scrollTo(0, 0)
-  }, [])
-
   return (
     <div className="min-h-screen bg-paper">
+      <SEO {...staticPageSEO['/sell-your-car']} />
       {/* 1. HERO SECTION & EMBEDDED SELLING FORM */}
       <section className="relative bg-ink text-paper pt-32 sm:pt-36 pb-20 sm:pb-28 overflow-hidden">
         {/* Ambient Dark Gradient */}

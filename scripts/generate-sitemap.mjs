@@ -13,16 +13,16 @@ const ROOT_DIR = path.resolve(__dirname, '..')
 const BASE_URL = process.env.VITE_SITE_URL || 'https://lovekushcars.in'
 const TODAY = new Date().toISOString().split('T')[0]
 
-// Core public routes with priority and change frequency
+// Core public routes with priority and change frequency matching site navigation
 const staticRoutes = [
   { path: '/', priority: '1.0', changefreq: 'daily' },
   { path: '/inventory', priority: '0.9', changefreq: 'daily' },
-  { path: '/sell-your-car', priority: '0.8', changefreq: 'weekly' },
-  { path: '/finance', priority: '0.8', changefreq: 'weekly' },
-  { path: '/about-us', priority: '0.7', changefreq: 'monthly' },
-  { path: '/contact-us', priority: '0.7', changefreq: 'monthly' },
+  { path: '/sell-your-car', priority: '0.9', changefreq: 'weekly' },
+  { path: '/finance', priority: '0.9', changefreq: 'weekly' },
+  { path: '/about', priority: '0.8', changefreq: 'monthly' },
+  { path: '/contact', priority: '0.8', changefreq: 'monthly' },
   { path: '/blog', priority: '0.8', changefreq: 'weekly' },
-  { path: '/testimonials', priority: '0.6', changefreq: 'monthly' },
+  { path: '/testimonials', priority: '0.7', changefreq: 'monthly' },
   { path: '/compare', priority: '0.5', changefreq: 'monthly' },
   { path: '/privacy-policy', priority: '0.3', changefreq: 'yearly' },
   { path: '/terms-and-conditions', priority: '0.3', changefreq: 'yearly' },
@@ -109,7 +109,14 @@ function generateXml() {
   return xml
 }
 
-const outputPath = path.join(ROOT_DIR, 'public', 'sitemap.xml')
+const publicPath = path.join(ROOT_DIR, 'public', 'sitemap.xml')
+const distPath = path.join(ROOT_DIR, 'dist', 'sitemap.xml')
 const xmlContent = generateXml()
-fs.writeFileSync(outputPath, xmlContent, 'utf-8')
-console.log(`Successfully generated sitemap.xml at: ${outputPath}`)
+
+fs.writeFileSync(publicPath, xmlContent, 'utf-8')
+console.log(`Successfully generated sitemap.xml at: ${publicPath}`)
+
+if (fs.existsSync(path.join(ROOT_DIR, 'dist'))) {
+  fs.writeFileSync(distPath, xmlContent, 'utf-8')
+  console.log(`Successfully synced sitemap.xml to: ${distPath}`)
+}

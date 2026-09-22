@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { SEO } from '@/components/seo/SEO'
+import { staticPageSEO } from '@/data/seoRegistry'
 import { ContactHero } from '@/components/contact/ContactHero'
 import { ShowroomCards } from '@/components/contact/ShowroomCards'
 import { ContactForm } from '@/components/contact/ContactForm'
@@ -7,13 +8,9 @@ import { ContactFaq } from '@/components/contact/ContactFaq'
 import { ShowroomVisitCta } from '@/components/contact/ShowroomVisitCta'
 
 export default function Contact() {
-  useEffect(() => {
-    document.title = 'Contact Us | Udaipur & Chittorgarh Showrooms | Love Kush Cars Rajasthan'
-    window.scrollTo(0, 0)
-  }, [])
-
   return (
     <div className="min-h-screen bg-paper">
+      <SEO {...staticPageSEO['/contact']} />
       {/* 1. HERO SECTION WITH HELPLINE NUMBERS */}
       <ContactHero />
 

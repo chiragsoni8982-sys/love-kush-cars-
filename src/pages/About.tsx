@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { SEO } from '@/components/seo/SEO'
+import { staticPageSEO } from '@/data/seoRegistry'
 import { AboutHero } from '@/components/about/AboutHero'
 import { FoundingStory } from '@/components/about/FoundingStory'
 import { AboutTimeline } from '@/components/about/AboutTimeline'
@@ -9,13 +10,9 @@ import { CustomerMoments } from '@/components/about/CustomerMoments'
 import { AboutCta } from '@/components/about/AboutCta'
 
 export default function About() {
-  useEffect(() => {
-    document.title = 'About Us | 24 Years of Trust & 20,000+ Cars Sold | Love Kush Cars Rajasthan'
-    window.scrollTo(0, 0)
-  }, [])
-
   return (
     <div className="min-h-screen bg-paper">
+      <SEO {...staticPageSEO['/about']} />
       {/* 1. CINEMATIC HERO WITH 2002 LEGACY & 20,000+ BENCHMARK */}
       <AboutHero />
 

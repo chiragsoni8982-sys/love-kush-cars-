@@ -16,6 +16,8 @@ import { HowFinanceWorks } from '@/components/finance/HowFinanceWorks'
 import { FinanceFaqSection } from '@/components/finance/FinanceFaqSection'
 import { LoanApplicationModal, type LoanType } from '@/components/finance/LoanApplicationModal'
 import { mockVehicles } from '@/data/mockVehicles'
+import { SEO } from '@/components/seo/SEO'
+import { staticPageSEO } from '@/data/seoRegistry'
 
 export default function Finance() {
   const [searchParams] = useSearchParams()
@@ -31,11 +33,6 @@ export default function Finance() {
   const [selectedLoanType, setSelectedLoanType] = useState<LoanType>(queryLoanType)
   const [selectedCarId, setSelectedCarId] = useState<string>(queryCarId)
   const [initialLoanAmount, setInitialLoanAmount] = useState<number | undefined>(undefined)
-
-  useEffect(() => {
-    document.title = 'Used Car Loan & Loan Against Car | 9+ Banking Partners | Love Kush Cars'
-    window.scrollTo(0, 0)
-  }, [])
 
   useEffect(() => {
     if (queryCarId) {
@@ -67,6 +64,7 @@ export default function Finance() {
 
   return (
     <div className="min-h-screen bg-paper">
+      <SEO {...staticPageSEO['/finance']} />
       {/* 1. HERO SECTION & INTEGRATED EMI CALCULATOR */}
       <FinanceHero
         onOpenApplyModal={handleOpenApplyModal}

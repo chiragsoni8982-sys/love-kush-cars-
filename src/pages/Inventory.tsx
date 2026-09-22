@@ -30,6 +30,8 @@ import { apiFetch } from '@/lib/api'
 import { mapApiVehicle, type ApiVehicle } from '@/lib/mapVehicle'
 import { formatINR, cn } from '@/lib/utils'
 import type { Vehicle } from '@/types'
+import { SEO } from '@/components/seo/SEO'
+import { staticPageSEO } from '@/data/seoRegistry'
 
 type SortKey = 'newest' | 'price-asc' | 'price-desc' | 'year-desc' | 'km-asc'
 type ViewMode = 'grid' | 'list'
@@ -63,11 +65,6 @@ export default function Inventory() {
   const [sort, setSort] = useState<SortKey>('newest')
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
   const [activeCuration, setActiveCuration] = useState<string>('all')
-
-  useEffect(() => {
-    document.title = 'Certified Pre-Owned Car Inventory | Udaipur & Chittorgarh | Love Kush Cars'
-    window.scrollTo(0, 0)
-  }, [])
 
   // Parse initial filters from URL query parameters
   const [filters, setFilters] = useState<FilterState>(() => {
@@ -281,6 +278,7 @@ export default function Inventory() {
 
   return (
     <div className="min-h-screen bg-paper">
+      <SEO {...staticPageSEO['/inventory']} />
       {/* 1. CINEMATIC LUXURY HERO HEADER */}
       <section className="relative bg-ink text-white pt-32 sm:pt-36 pb-14 sm:pb-18 overflow-hidden">
         {/* Subtle Ambient Glowing Gradients */}

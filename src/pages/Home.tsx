@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { SEO } from '@/components/seo/SEO'
+import { staticPageSEO } from '@/data/seoRegistry'
 import { Hero } from '@/components/home/Hero'
 import { OutletShowcase } from '@/components/home/OutletShowcase'
 import { FeaturedCollection } from '@/components/home/FeaturedCollection'
@@ -11,13 +12,9 @@ import { HomeBlogPreview } from '@/components/home/HomeBlogPreview'
 import { FinalCta } from '@/components/home/FinalCta'
 
 export default function Home() {
-  useEffect(() => {
-    document.title = 'Love Kush Cars | Certified Pre-Owned Luxury Cars in Udaipur & Chittorgarh'
-    window.scrollTo(0, 0)
-  }, [])
-
   return (
     <div className="min-h-screen bg-paper">
+      <SEO {...staticPageSEO['/']} />
       {/* 1. Hero with Multi-Intent Tabs (Find Car / Sell Car / Instant EMI) */}
       <Hero />
 

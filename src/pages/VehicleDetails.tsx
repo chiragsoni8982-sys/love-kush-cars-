@@ -26,6 +26,9 @@ import { apiFetch } from '@/lib/api'
 import { mapApiVehicle } from '@/lib/mapVehicle'
 import { getWhatsAppUrl, getCallUrl } from '@/lib/contact'
 import type { Vehicle } from '@/types'
+import { mockVehicles } from '@/data/mockVehicles'
+import { SEO } from '@/components/seo/SEO'
+import { getVehicleSEOMetadata } from '@/data/seoRegistry'
 
 const TABS = ['Overview', 'Specifications', 'Features', 'Ownership'] as const
 type Tab = (typeof TABS)[number]
@@ -165,30 +168,36 @@ export default function VehicleDetails() {
   const [tab, setTab] = useState<Tab>('Overview')
   const [testDriveOpen, setTestDriveOpen] = useState(false)
 
-  // NEW: vehicle now starts as null and gets fetched, instead of being
-  // found instantly in the mock array.
-  const [vehicle, setVehicle] = useState<Vehicle | null>(null)
-  const [allVehicles, setAllVehicles] = useState<Vehicle[]>([])
-  const [loading, setLoading] = useState(true)
+  // Initialize immediately from mockVehicles if available, then refresh from API
+  const [vehicle, setVehicle] = useState<Vehicle | null>(() => {
+    return mockVehicles.find((v) => v.id === vehicleId) || null
+  })
+  const [allVehicles, setAllVehicles] = useState<Vehicle[]>(mockVehicles)
+  const [loading, setLoading] = useState(!mockVehicles.some((v) => v.id === vehicleId))
   const [notFound, setNotFound] = useState(false)
 
-  // NEW: fetch the one specific car by ID, plus the full list (for the
-  // "Similar Cars" section at the bottom).
   useEffect(() => {
-    setLoading(true)
+    const cached = mockVehicles.find((v) => v.id === vehicleId)
+    if (!cached) setLoading(true)
     setNotFound(false)
 
     apiFetch<Parameters<typeof mapApiVehicle>[0]>(`/vehicles/${vehicleId}`)
       .then((raw) => setVehicle(mapApiVehicle(raw)))
-      .catch(() => setNotFound(true))
+      .catch(() => {
+        const fallback = mockVehicles.find((v) => v.id === vehicleId)
+        if (fallback) {
+          setVehicle(fallback)
+        } else {
+          setNotFound(true)
+        }
+      })
+      .finally(() => setLoading(false))
 
     apiFetch<Parameters<typeof mapApiVehicle>[0][]>('/vehicles')
       .then((data) => setAllVehicles(data.map((raw, i) => mapApiVehicle(raw, i))))
       .catch(() => {
-        // Similar Cars section just won't show anything if this fails —
-        // not worth blocking the whole page over it.
+        // Fall back to mockVehicles for similar vehicles
       })
-      .finally(() => setLoading(false))
   }, [vehicleId])
 
   const similar = useMemo(() => {
@@ -198,13 +207,29 @@ export default function VehicleDetails() {
       .slice(0, 3)
   }, [vehicle, allVehicles])
 
+  const seoData = useMemo(() => {
+    if (vehicle) return getVehicleSEOMetadata(vehicle)
+    return {
+      title: 'Vehicle Details | Love Kush Cars Udaipur & Chittorgarh',
+      description: 'Certified pre-owned luxury car with 200-point inspection and instant financing.',
+      canonicalPath: `/inventory/${vehicleId || ''}`,
+      noindex: notFound,
+    }
+  }, [vehicle, vehicleId, notFound])
+
   if (loading) {
-    return <div className="container-lk pt-40 pb-24 text-center text-slate">Loading vehicle…</div>
+    return (
+      <div className="container-lk pt-40 pb-24 text-center text-slate">
+        <SEO {...seoData} />
+        Loading vehicle…
+      </div>
+    )
   }
 
   if (notFound || !vehicle) {
     return (
       <div className="container-lk pt-40 pb-24 text-center">
+        <SEO {...seoData} />
         <h1 className="font-[family-name:var(--font-display)] font-bold text-3xl mb-4">Vehicle Not Found</h1>
         <p className="text-slate mb-8">This listing may have been sold or moved.</p>
         <Link to="/inventory">
@@ -218,6 +243,7 @@ export default function VehicleDetails() {
 
   return (
     <div className="w-full max-w-full overflow-x-hidden">
+      <SEO {...seoData} />
       <div className="container-lk pt-24 sm:pt-28 pb-24">
         {/* Breadcrumb */}
         <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate mb-6 pt-4">

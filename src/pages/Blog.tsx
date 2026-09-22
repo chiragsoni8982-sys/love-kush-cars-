@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { PhoneCall, MessageCircle, MapPin, AlertCircle } from 'lucide-react'
 import { blogPosts } from '@/data/blogPosts'
 import { BlogHero } from '@/components/blog/BlogHero'
@@ -6,15 +6,12 @@ import { BlogFilterBar } from '@/components/blog/BlogFilterBar'
 import { BlogCard } from '@/components/blog/BlogCard'
 import { BlogNewsletter } from '@/components/blog/BlogNewsletter'
 import { Button } from '@/components/ui/Button'
+import { SEO } from '@/components/seo/SEO'
+import { staticPageSEO } from '@/data/seoRegistry'
 
 export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All')
   const [searchQuery, setSearchQuery] = useState<string>('')
-
-  useEffect(() => {
-    document.title = 'Automotive Journal & Buying Guides | Love Kush Cars Udaipur & Chittorgarh'
-    window.scrollTo(0, 0)
-  }, [])
 
   // Featured post for Hero
   const featuredPost = useMemo(() => {
@@ -42,6 +39,7 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-paper">
+      <SEO {...staticPageSEO['/blog']} />
       {/* 1. HERO SPOTLIGHT MAGAZINE FEATURE */}
       <BlogHero featuredPost={featuredPost} />
 
