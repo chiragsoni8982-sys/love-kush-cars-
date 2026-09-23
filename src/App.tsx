@@ -19,6 +19,9 @@ import Blog from '@/pages/Blog'
 import BlogPost from '@/pages/BlogPost'
 import Contact from '@/pages/Contact'
 import ComingSoon from '@/pages/ComingSoon'
+import Compare from '@/pages/Compare'
+import { CompareFloatingBar } from '@/components/vehicle/CompareFloatingBar'
+import { ToastNotification } from '@/components/ui/ToastNotification'
 
 import AdminLogin from '@/pages/admin/AdminLogin'
 import AdminDashboard from '@/pages/admin/AdminDashboard'
@@ -32,10 +35,12 @@ function CustomerLayout() {
     <>
       <CustomCursor />
       <LoadingScreen />
+      <ToastNotification />
       <Nav />
       <main className="w-full max-w-full overflow-x-hidden min-h-[calc(100vh-200px)]">
         <Outlet />
       </main>
+      <CompareFloatingBar />
       <Footer />
       <StickyActions />
     </>
@@ -86,7 +91,7 @@ export default function App() {
               <Route path="/privacy-policy" element={<ComingSoon title="Privacy Policy" />} />
               <Route path="/terms-and-conditions" element={<ComingSoon title="Terms & Conditions" />} />
               <Route path="/wishlist" element={<ComingSoon title="Wishlist" />} />
-              <Route path="/compare" element={<ComingSoon title="Compare" />} />
+              <Route path="/compare" element={<Compare />} />
               <Route path="*" element={<ComingSoon title="Page Not Found" note="Let's get you back home." />} />
             </Route>
           </Routes>

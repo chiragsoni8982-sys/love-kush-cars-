@@ -13,7 +13,9 @@ import {
   ShieldCheck,
   ChevronRight,
   ChevronLeft,
+  GitCompareArrows,
 } from 'lucide-react'
+import { useCompare } from '@/hooks/useCompare'
 import { VehicleImage } from '@/components/vehicle/VehicleImage'
 import { VehicleCard } from '@/components/vehicle/VehicleCard'
 import { Badge } from '@/components/ui/Badge'
@@ -165,6 +167,7 @@ function TestDriveModal({ open, onClose, vehicleName }: { open: boolean; onClose
 
 export default function VehicleDetails() {
   const { vehicleId } = useParams()
+  const { isComparing, toggleCompare } = useCompare()
   const [tab, setTab] = useState<Tab>('Overview')
   const [testDriveOpen, setTestDriveOpen] = useState(false)
 
@@ -388,6 +391,31 @@ export default function VehicleDetails() {
                 <Button size="lg" icon={<CalendarDays className="h-4 w-4" />} onClick={() => setTestDriveOpen(true)}>
                   Book Test Drive
                 </Button>
+
+                {/* Compare Action */}
+                <button
+                  type="button"
+                  onClick={() => toggleCompare(vehicle.id, vehicleName)}
+                  className={cn(
+                    'w-full py-3 px-4 border text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all',
+                    isComparing(vehicle.id)
+                      ? 'bg-ink text-paper border-ink'
+                      : 'bg-mist hover:bg-paper text-ink border-line hover:border-ink',
+                  )}
+                >
+                  <GitCompareArrows className="h-4 w-4" />
+                  {isComparing(vehicle.id) ? 'Added to Comparison' : 'Add to Compare with Stock'}
+                </button>
+
+                {isComparing(vehicle.id) && (
+                  <Link
+                    to="/compare"
+                    className="text-center text-xs font-semibold text-ink underline underline-offset-2 hover:opacity-80 transition-opacity"
+                  >
+                    View Side-by-Side Comparison &rarr;
+                  </Link>
+                )}
+
                 <div className="grid grid-cols-2 gap-3">
                   <a href={getCallUrl()} className="block w-full">
                     <Button variant="secondary" size="lg" className="w-full" icon={<Phone className="h-4 w-4" />}>

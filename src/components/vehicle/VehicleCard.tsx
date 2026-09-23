@@ -81,11 +81,17 @@ export function VehicleCard({ vehicle, compact, layout = 'grid' }: VehicleCardPr
               <Heart className={cn('h-3.5 w-3.5', wishlisted ? 'fill-ink text-ink' : 'text-ink')} />
             </button>
             <button
-              aria-label="Add to compare"
-              onClick={() => toggleCompare(vehicle.id)}
-              className="h-8 w-8 flex items-center justify-center bg-paper/90 backdrop-blur-sm hover:bg-paper transition-colors"
+              aria-label={comparing ? 'Remove from compare' : 'Add to compare'}
+              title={comparing ? 'Remove from compare' : 'Add to compare'}
+              onClick={() => toggleCompare(vehicle.id, `${vehicle.year} ${vehicle.brand} ${vehicle.model}`)}
+              className={cn(
+                'h-8 w-8 flex items-center justify-center backdrop-blur-sm transition-all',
+                comparing
+                  ? 'bg-ink text-paper shadow-sm'
+                  : 'bg-paper/90 text-ink/70 hover:bg-paper hover:text-ink',
+              )}
             >
-              <GitCompareArrows className={cn('h-3.5 w-3.5', comparing ? 'text-ink' : 'text-ink/70')} />
+              <GitCompareArrows className="h-3.5 w-3.5" />
             </button>
           </div>
         </div>
@@ -233,11 +239,17 @@ export function VehicleCard({ vehicle, compact, layout = 'grid' }: VehicleCardPr
             <Heart className={cn('h-4 w-4', wishlisted ? 'fill-ink text-ink' : 'text-ink')} />
           </button>
           <button
-            aria-label="Add to compare"
-            onClick={() => toggleCompare(vehicle.id)}
-            className="h-9 w-9 flex items-center justify-center bg-paper/90 backdrop-blur-sm hover:bg-paper transition-colors"
+            aria-label={comparing ? 'Remove from compare' : 'Add to compare'}
+            title={comparing ? 'Remove from compare' : 'Add to compare'}
+            onClick={() => toggleCompare(vehicle.id, `${vehicle.year} ${vehicle.brand} ${vehicle.model}`)}
+            className={cn(
+              'h-9 w-9 flex items-center justify-center backdrop-blur-sm transition-all',
+              comparing
+                ? 'bg-ink text-paper shadow-sm'
+                : 'bg-paper/90 text-ink/70 hover:bg-paper hover:text-ink',
+            )}
           >
-            <GitCompareArrows className={cn('h-4 w-4', comparing ? 'text-ink' : 'text-ink/70')} />
+            <GitCompareArrows className="h-4 w-4" />
           </button>
         </div>
       </div>

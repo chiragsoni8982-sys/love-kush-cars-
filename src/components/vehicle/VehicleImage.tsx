@@ -3,10 +3,11 @@ import { Camera } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface VehicleImageProps {
-  tone: string
+  tone?: string
   src?: string
-  brand: string
-  model: string
+  brand?: string
+  model?: string
+  alt?: string
   className?: string
   fit?: 'cover' | 'contain'
   showBackdrop?: boolean
@@ -21,6 +22,7 @@ export function VehicleImage({
   src,
   brand,
   model,
+  alt,
   className,
   fit = 'cover',
   showBackdrop = true,
@@ -32,6 +34,7 @@ export function VehicleImage({
   }, [src])
 
   const safeTone = tone && tone.startsWith('#') ? tone : '#1a1a1a'
+  const altText = alt || `${brand || ''} ${model || ''}`.trim() || 'Vehicle'
 
   if (src && !hasError) {
     return (
@@ -52,7 +55,7 @@ export function VehicleImage({
         )}
         <img
           src={src}
-          alt={`${brand} ${model}`}
+          alt={altText}
           decoding="async"
           className={cn(
             'transition-transform duration-500 ease-out',
@@ -74,7 +77,7 @@ export function VehicleImage({
       <div className="text-center px-4">
         <Camera className="mx-auto h-6 w-6 text-white/30 mb-2" strokeWidth={1.5} />
         <p className="text-white/40 text-[11px] uppercase tracking-widest font-medium">
-          {brand} {model}
+          {altText}
         </p>
       </div>
     </div>
